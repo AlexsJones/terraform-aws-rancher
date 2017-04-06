@@ -1,0 +1,11 @@
+#cloud-config
+apt_update: true
+
+packages:
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - software-properties-common
+  - docker.io
+runcmd:
+  - sudo docker run -d --restart=unless-stopped -p 80:8080 rancher/server
