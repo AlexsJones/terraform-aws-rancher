@@ -1,29 +1,15 @@
-variable "root_zone" {}
-variable "hosted_zone" {}
-
-variable "name_servers" {
-  type = "list"
+resource "aws_route53_zone" "web-elb" {
+  name = "crystal-basilica.com"
 }
 
-# route53 zone ----------------------------------------------------------------
-resource "aws_route53_zone" "root-host" {
-  name = "${var.root_zone}"
-}
+resource "aws_route53_record" "web-elb-record" {
+  zone_id = "${aws_route53_zone.web-elb.zone_id}"
+  name    = "www"
+  type    = "A"
 
-# route53 record --------------------------------------------------------------
-resource "aws_route53_record" "dev-hosted_zone_record" {
-  zone_id = "${aws_route53_zone.root-host.id}"
-  name    = "${var.hosted_zone}"
-  type    = "CNAME"
-  ttl     = "60"
-  records = ["${aws_elb.elb.dns_name}"]
-}
-
-# route53 record --------------------------------------------------------------
-resource "aws_route53_record" "dev-ns-hosted_zone_record" {
-  zone_id = "${aws_route53_zone.root-host.id}"
-  name    = "${var.hosted_zone}"
-  type    = "NS"
-  ttl     = "60"
-  records = ["${var.name_servers}"]
+  alias {
+    zone_id                = "${aws_elb.elb.zone_id}"
+    name                   = "${aws_elb.elb.dns_name}"
+    evaluate_target_health = true
+  }
 }
