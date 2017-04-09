@@ -22,6 +22,15 @@ variable "public_subnet_cidr_block" {
   }
 }
 
+variable "aws_nameserver_dev" {
+  default = {
+    one   = "ns-1813.awsdns-34.co.uk"
+    two   = "ns-1434.awsdns-51.org"
+    three = "ns-911.awsdns-49.net"
+    four  = "ns-53.awsdns-06.com"
+  }
+}
+
 variable "rancher_instance_size" {
   default = {
     dev = "m1.small"

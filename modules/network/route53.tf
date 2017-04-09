@@ -1,5 +1,10 @@
 resource "aws_route53_zone" "web-elb" {
-  name = "crystal-basilica.com"
+  name              = "crystal-basilica.com"
+  delegation_set_id = "${aws_route53_delegation_set.main.id}"
+}
+
+resource "aws_route53_delegation_set" "main" {
+  reference_name = "DNS"
 }
 
 resource "aws_route53_record" "web-elb-record" {
